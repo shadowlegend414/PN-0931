@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090c13">
+<title>JEE Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<div class="orbs"><i></i><i></i><i></i></div>
+<div id="authView">
+  <section>
+    <div class="brand"><span class="logo"><svg viewBox="0 0 24 24"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/></svg></span>JEE Tracker</div>
+    <h1>Study like a topper.</h1>
+    <p class="lead">Track every chapter, build a daily streak and compete with friends on a live leaderboard.</p>
+    <ul class="feat"><li>Syllabus tracker for Physics, Chemistry and Maths</li><li>Daily tasks with streaks and levels</li><li>Party leaderboards with friends</li></ul>
+  </section>
+  <div class="card">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tLogin" aria-selected="true">Log in</button>
+      <button role="tab" id="tSignup" aria-selected="false">Create account</button>
+    </div>
+    <div id="fName" hidden><label for="name">Your name</label><input id="name" type="text" maxlength="24" autocomplete="nickname"></div>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" inputmode="email">
+    <div id="fPass"><label for="pass">Password</label>
+      <div class="pw"><input id="pass" type="password" autocomplete="current-password"><button type="button" id="eye">Show</button></div>
+    </div>
+    <button class="go" id="go">Log in</button>
+    <button class="link" id="forgot" type="button">Forgot password?</button>
+    <p class="msg" id="msg" role="alert"></p>
+  </div>
+</div>
+<div id="shell" hidden>
+  <aside id="side"><div class="brand"><span class="logo"><svg viewBox="0 0 24 24"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/></svg></span>JEE Tracker</div><nav id="nav"></nav><div class="me"><span class="av" id="av"></span><b id="un"></b></div></aside>
+  <main id="app"></main>
+</div>
+
+<script type="module" src="app.js?v=1"></script>
+</body>
+</html>
