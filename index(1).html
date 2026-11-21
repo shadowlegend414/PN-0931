@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef3f8">
+<title>JEE Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#eef3f8;--grid:#d3deea;--ink:#14213d;--mute:#5a6b85;--acc:#2457f5;--accink:#fff;--hl:#ffd43b;--err:#c2255c;--card:#fbfdff;--line:#14213d;--ph:#e8590c;--ch:#139a52;--ma:#7048e8}
+@media(prefers-color-scheme:dark){:root{--paper:#0e1626;--grid:#1a2840;--ink:#e8eefb;--mute:#93a4c0;--acc:#6f93ff;--accink:#0e1626;--err:#ff7aa8;--card:#142036;--line:#e8eefb;--ph:#ff8a4c;--ch:#4cc983;--ma:#a58bff}}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;color:var(--ink);font:16px/1.5 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;padding-top:env(safe-area-inset-top,0px)}
+.wrap{max-width:460px;margin:0 auto;padding:28px 16px 40px}
+h1{font-size:44px;line-height:1.02;font-weight:800;letter-spacing:-.03em;margin:0 0 10px}
+h1 mark{background:var(--hl);color:#14213d;padding:0 6px}
+h2{font-size:28px;line-height:1.1;font-weight:800;letter-spacing:-.02em;margin:0 0 4px}
+.lead{color:var(--mute);margin:0 0 20px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:6px;padding:16px;margin-bottom:14px}
+.tabs{display:flex;margin:-16px -16px 16px;border-bottom:2px solid var(--line)}
+.tabs button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-weight:600;padding:14px 6px;cursor:pointer}
+.tabs button+button{border-left:2px solid var(--line)}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--paper)}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:6px;padding:12px}
+.pw{position:relative}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--acc);font:inherit;font-weight:600;padding:8px;cursor:pointer}
+.go{width:100%;margin-top:18px;border:2px solid var(--line);background:var(--acc);color:var(--accink);font:inherit;font-weight:800;font-size:17px;padding:13px;border-radius:6px;cursor:pointer}
+.go:disabled{opacity:.6}
+.link{display:block;margin:14px auto 0;border:0;background:none;color:var(--acc);font:inherit;font-weight:600;cursor:pointer}
+.msg{min-height:22px;margin:12px 0 0;font-size:14px;font-weight:600}
+.msg.err{color:var(--err)}.msg.ok{color:var(--acc)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+[hidden]{display:none!important}
+#app{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+.sync{font-size:13px;color:var(--mute);font-weight:600}
+.sub{display:flex;gap:14px;align-items:center}
+.sub svg{flex:none}
+.sub h3{margin:0;font-size:22px;font-weight:800}
+.sub p{margin:2px 0 0;font-size:14px;color:var(--mute)}
+details{margin-top:12px;border-top:2px solid var(--line);padding-top:4px}
+summary{cursor:pointer;font-weight:600;padding:8px 0;color:var(--acc)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--grid)}
+.row:first-of-type{border-top:0}
+.st{border:2px solid var(--line);font:inherit;font-size:13px;font-weight:600;padding:5px 10px;border-radius:99px;min-width:104px;cursor:pointer;background:var(--paper);color:var(--mute)}
+.st.s1{background:#fff0a8;color:#5c4500}.st.s2{background:#b8efc9;color:#0d5b2c}.st.s3{background:#d4c5ff;color:#35188f}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:2px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-size:12px;font-weight:600;padding:9px 2px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-top:4px solid transparent;margin-top:-2px}
+.nav button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-current=page]{color:var(--ink);border-top-color:var(--hl)}
+.empty{text-align:center;padding:26px 10px}
+.empty b{display:block;font-size:20px;margin-bottom:4px}
+.empty span{color:var(--mute)}
+.kv{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--grid)}
+.kv:first-of-type{border-top:0}.kv span{color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="authView">
+    <h1>JEE <mark>Tracker</mark></h1>
+    <p class="lead">Track every chapter, keep your streak and beat your friends.</p>
+    <div class="card">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tLogin" aria-selected="true">Log in</button>
+        <button role="tab" id="tSignup" aria-selected="false">Create account</button>
+      </div>
+      <div id="fName" hidden><label for="name">Your name</label><input id="name" type="text" maxlength="24" autocomplete="nickname"></div>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email">
+      <div id="fPass"><label for="pass">Password</label>
+        <div class="pw"><input id="pass" type="password" autocomplete="current-password"><button type="button" id="eye">Show</button></div>
+      </div>
+      <button class="go" id="go">Log in</button>
+      <button class="link" id="forgot" type="button">Forgot password?</button>
+      <p class="msg" id="msg" role="alert"></p>
+    </div>
+  </div>
+  <div id="app" hidden></div>
+</div>
+<nav class="nav" id="nav" hidden></nav>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendPasswordResetEmail,updateProfile,signOut} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+import {initializeFirestore,persistentLocalCache,getFirestore,doc,getDoc,setDoc} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+const app=initializeApp({
+  apiKey:"AIzaSyCe-gQ-mPH5Z_T_mWBv8AgaP2PgsKFHlcg",
+  authDomain:"pn0931.firebaseapp.com",
+  projectId:"pn0931",
+  storageBucket:"pn0931.firebasestorage.app",
+  messagingSenderId:"732936433481",
+  appId:"1:732936433481:web:39ca9a8483805119b1b498"
+});
+const auth=getAuth(app);
+let db;try{db=initializeFirestore(app,{localCache:persistentLocalCache()})}catch(e){db=getFirestore(app)}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* Do not reorder chapters: progress is saved by position (P0, P1, C0...) */
+const SUBJ=[
+{k:"P",n:"Physics",c:"var(--ph)",ch:["Units & Measurements","Kinematics","Laws of Motion","Work, Energy & Power","Rotational Motion","Gravitation","Properties of Solids & Fluids","Thermodynamics & KTG","Oscillations & Waves","Electrostatics","Current Electricity","Magnetism & EMI","AC & EM Waves","Ray & Wave Optics","Modern Physics","Semiconductors"]},
+{k:"C",n:"Chemistry",c:"var(--ch)",ch:["Some Basic Concepts","Atomic Structure","Periodic Table","Chemical Bonding","States of Matter & Solutions","Thermodynamics","Equilibrium","Redox & Electrochemistry","Chemical Kinetics","Coordination Compounds","d & f Block / Metallurgy","p-Block Elements","GOC & Isomerism","Hydrocarbons","Haloalkanes, Alcohols & Ethers","Carbonyls & Acids","Amines & Biomolecules"]},
+{k:"M",n:"Maths",c:"var(--ma)",ch:["Sets, Relations & Functions","Complex Numbers","Quadratic Equations","Sequences & Series","Permutations & Combinations","Binomial Theorem","Matrices & Determinants","Limits & Continuity","Differentiation & Applications","Integration","Differential Equations","Straight Lines","Circles","Conic Sections","3D Geometry","Vectors","Probability","Statistics","Trigonometry"]}
+];
+const LAB=["Not started","Learning","Done","Revised"];
+const ICON={
+syl:'<path d="M5 4h13v16H7a2 2 0 0 1-2-2z"/><path d="M9 8h6"/>',
+party:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5 2.3 5 5.8"/>',
+tasks:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="m8 12 3 3 5-6"/>',
+me:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'};
+const NAV=[["syl","Syllabus"],["party","Party"],["tasks","Tasks"],["me","Profile"]];
+const TITLE={syl:"Syllabus",party:"Party",tasks:"Daily Tasks",me:"Profile"};
+
+let user=null,T={},tab="syl",sync="",pt=null,open={};
+
+/* ---------- saving ---------- */
+function save(){
+  try{localStorage.setItem("jee-"+user.uid,JSON.stringify(T))}catch(e){}
+  setSync("Saving…");clearTimeout(pt);
+  pt=setTimeout(async()=>{
+    try{await setDoc(doc(db,"users",user.uid),{name:user.displayName||"",topics:T,updated:Date.now()},{merge:true});setSync("Saved")}
+    catch(e){setSync("Not saved yet. Check your connection.")}
+  },600);
+}
+function setSync(t){sync=t;const s=$("sync");if(s)s.textContent=t}
+async function load(u){
+  T={};
+  try{T=JSON.parse(localStorage.getItem("jee-"+u.uid)||"{}")}catch(e){}
+  try{const s=await getDoc(doc(db,"users",u.uid));if(s.exists()){T=s.data().topics||{};try{localStorage.setItem("jee-"+u.uid,JSON.stringify(T))}catch(e){}}}
+  catch(e){sync="Offline. Showing saved progress."}
+  render();
+}
+
+/* ---------- views ---------- */
+function counts(s){const c=[0,0,0,0];s.ch.forEach((_,i)=>c[T[s.k+i]||0]++);return c}
+function donut(c,tot,col){
+  const r=34,C=2*Math.PI*r;let off=0,seg="";
+  [[3,1],[2,.6],[1,.3]].forEach(([s,o])=>{
+    const l=c[s]/tot*C;
+    if(l>0){seg+='<circle cx="44" cy="44" r="34" fill="none" stroke="'+col+'" stroke-opacity="'+o+'" stroke-width="12" stroke-dasharray="'+l+" "+(C-l)+'" stroke-dashoffset="'+(-off)+'" transform="rotate(-90 44 44)"/>';off+=l}
+  });
+  const pct=Math.round((c[2]+c[3])/tot*100);
+  return '<svg viewBox="0 0 88 88" width="88" height="88" role="img" aria-label="'+pct+' percent done"><circle cx="44" cy="44" r="34" fill="none" stroke="var(--grid)" stroke-width="12"/>'+seg+'<text x="44" y="50" text-anchor="middle" font-size="18" font-weight="800" fill="var(--ink)">'+pct+'%</text></svg>';
+}
+function viewSyl(){
+  return SUBJ.map(s=>{
+    const c=counts(s),n=s.ch.length;
+    let rows="";
+    s.ch.forEach((name,i)=>{const v=T[s.k+i]||0;rows+='<div class="row"><span>'+esc(name)+'</span><button class="st s'+v+'" data-a="cyc" data-k="'+s.k+i+'">'+LAB[v]+"</button></div>"});
+    return '<div class="card"><div class="sub">'+donut(c,n,s.c)+'<div><h3>'+s.n+'</h3><p>'+(c[2]+c[3])+" of "+n+" chapters done</p><p>"+c[3]+" revised, "+c[1]+" learning</p></div></div>"+
+      '<details data-s="'+s.k+'"'+(open[s.k]?" open":"")+"><summary>Chapters</summary>"+rows+"</details></div>";
+  }).join("")+'<p class="sync">Tap a status to move it forward: Not started, Learning, Done, Revised.</p>';
+}
+function viewSoon(t,d){return '<div class="card empty"><b>'+t+"</b><span>"+d+"</span></div>"}
+function viewMe(){
+  let done=0,tot=0;SUBJ.forEach(s=>{const c=counts(s);done+=c[2]+c[3];tot+=s.ch.length});
+  return '<div class="card"><div class="kv"><span>Name</span><b id="pn"></b></div><div class="kv"><span>Email</span><b id="pe" style="word-break:break-all;text-align:right"></b></div><div class="kv"><span>Chapters done</span><b>'+done+" of "+tot+'</b></div></div><button class="go" data-a="out" style="margin-top:0">Log out</button>';
+}
+function render(){
+  $("authView").hidden=!!user;
+  $("app").hidden=!user;$("nav").hidden=!user;
+  if(!user)return;
+  const body=tab==="syl"?viewSyl():tab==="party"?viewSoon("Party is coming soon","You will create a party, share an invite code and compete with friends here."):tab==="tasks"?viewSoon("Daily Tasks are coming soon","You will add tasks, tick them off and keep your streak here."):viewMe();
+  $("app").innerHTML='<div class="top"><h2>'+TITLE[tab]+'</h2><span class="sync" id="sync">'+esc(sync)+"</span></div>"+body;
+  if(tab==="me"){$("pn").textContent=user.displayName||"Not set";$("pe").textContent=user.email}
+  $("nav").innerHTML=NAV.map(([k,l])=>'<button data-a="tab" data-k="'+k+'"'+(tab===k?' aria-current="page"':"")+'><svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[k]+"</svg>"+l+"</button>").join("");
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]");if(!b||!user)return;
+  const a=b.dataset.a,k=b.dataset.k;
+  if(a==="tab"){tab=k;window.scrollTo(0,0)}
+  else if(a==="cyc"){T[k]=((T[k]||0)+1)%4;save()}
+  else if(a==="out"){signOut(auth);return}
+  render();
+});
+document.addEventListener("toggle",e=>{const d=e.target;if(d.dataset&&d.dataset.s)open[d.dataset.s]=d.open},true);
+
+/* ---------- login ---------- */
+let mode="login";
+function setMsg(t,c){const m=$("msg");m.textContent=t||"";m.className="msg "+(c||"")}
+function setMode(m){
+  mode=m;setMsg("");
+  $("tLogin").setAttribute("aria-selected",m==="login");
+  $("tSignup").setAttribute("aria-selected",m==="signup");
+  $("fName").hidden=m!=="signup";
+  $("fPass").hidden=m==="reset";
+  $("pass").autocomplete=m==="signup"?"new-password":"current-password";
+  $("go").textContent=m==="login"?"Log in":m==="signup"?"Create account":"Send reset link";
+  $("forgot").textContent=m==="reset"?"Back to log in":"Forgot password?";
+}
+function why(e){
+  const c=(e&&e.code)||"";
+  if(c==="auth/invalid-credential"||c==="auth/wrong-password"||c==="auth/user-not-found")return "Email or password is wrong. Check both and try again.";
+  if(c==="auth/email-already-in-use")return "This email already has an account. Use Log in instead.";
+  if(c==="auth/weak-password")return "Use a password with at least 6 characters.";
+  if(c==="auth/invalid-email")return "Enter a valid email address, like name@gmail.com.";
+  if(c==="auth/too-many-requests")return "Too many tries. Wait a few minutes, then try again.";
+  if(c==="auth/network-request-failed")return "No internet connection. Check your network and try again.";
+  return "Something went wrong ("+(c||"unknown")+"). Try again.";
+}
+$("tLogin").onclick=()=>setMode("login");
+$("tSignup").onclick=()=>setMode("signup");
+$("forgot").onclick=()=>setMode(mode==="reset"?"login":"reset");
+$("eye").onclick=()=>{const p=$("pass"),s=p.type==="password";p.type=s?"text":"password";$("eye").textContent=s?"Hide":"Show"};
+$("go").onclick=async()=>{
+  const email=$("email").value.trim(),pass=$("pass").value,name=$("name").value.trim();
+  if(!email){setMsg("Enter your email.","err");return}
+  if(mode!=="reset"&&!pass){setMsg("Enter your password.","err");return}
+  if(mode==="signup"&&!name){setMsg("Enter your name. Friends will see it.","err");return}
+  $("go").disabled=true;setMsg("");
+  try{
+    if(mode==="login")await signInWithEmailAndPassword(auth,email,pass);
+    else if(mode==="signup"){
+      const c=await createUserWithEmailAndPassword(auth,email,pass);
+      await updateProfile(c.user,{displayName:name.slice(0,24)});
+      try{await setDoc(doc(db,"users",c.user.uid),{name:name.slice(0,24),updated:Date.now()},{merge:true})}catch(x){}
+      render();
+    }else{await sendPasswordResetEmail(auth,email);setMsg("Reset link sent. Check your inbox and spam folder.","ok")}
+  }catch(e){setMsg(why(e),"err")}
+  $("go").disabled=false;
+};
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&!$("authView").hidden&&e.target.tagName==="INPUT")$("go").click()});
+
+onAuthStateChanged(auth,u=>{
+  user=u;sync="";
+  if(u){tab="syl";load(u)}else{T={};render()}
+});
+</script>
+</body>
+</html>
